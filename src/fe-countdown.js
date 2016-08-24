@@ -1,6 +1,6 @@
 import timerMgr from "./timerMgr/timerMgr";
 import {
-  formatTime, formatTemplete, self
+  formatTime, formatTemplete, extend
 }
 from "./utils"
 
@@ -9,19 +9,18 @@ import defaultOptions from "./defaultOptions"
 
 
 var delayTime = 1000;
-var tm = new timerMgr();
 
 
 
-export default class countDown {
+export default class CountDown {
   constructor(config) {
+    this.config = {}
     for (var i in defaultOptions) {
       if (defaultOptions.hasOwnProperty(i)) {
-        this[i] = config[i] || defaultOptions[i];
+        this.config[i] = config[i] || defaultOptions[i];
       }
     }
-
-    this.msInterval = tm.getTimer(this.delayTime)
+    this.msInterval = timerMgr.generateTimer(this.config)
     this.init();
   }
 
@@ -35,24 +34,24 @@ export default class countDown {
         });
       });
     }
-    var index = this.msInterval.add(function() {
+    var index = this.msInterval._timer.add(function() {
       self.now += delayTime;
       if (self.now >= self.endTime) {
         this.msInterval.remove(index);
         self.end();
       } else {
-        self.render(self.getOutString());
+        self.config.render(self.getOutString());
       }
     });
   }
 
   getBetween() {
-    return formatTime(this.endTime - this.now);
+    return formatTime(this.config.endTime - this.config.now);
   }
 
   getOutString() {
     var between = this.getBetween();
-    return formatTemplete(this.template, between);
+    return formatTemplete(this.config.template, between);
   }
 
 

@@ -6,15 +6,17 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'countdown.js',
-    library: 'countdown',
+    library: 'CountDown',
     libraryTarget: 'umd'
   },
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel',query: {
+    loaders: [{
+      test: /\.js$/,
+      loader: 'babel',
+      query: {
         presets: ['es2015']
-      } }
-    ]
+      }
+    }]
   },
   plugins: [
     new webpack.DefinePlugin({

@@ -1,4 +1,4 @@
-class timer {
+export default class Timer {
   constructor(delay) {
     this._queue = [];
     this.stop = false;

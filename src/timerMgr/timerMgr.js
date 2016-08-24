@@ -1,31 +1,29 @@
-var timerMgr = function() {
-  this._timePool = new TimePool();
+import {
+  Option
 }
-timerMgr.prototype.getTimer = function(delay) {
-  return this._timePool.getTimer(delay)
-}
-timerMgr.prototype.createTimer = function(opts) {
-  var defaultOptions = {
-    delayTime: 1000,
-    end: function() {
-      console.log("end this.opts")
-    },
-    start: function() {
-      console.log("start this.opts")
-    },
-    timerFn: function() {
-      console.log("timerFn")
-    },
-    fixNowDate: false,
-    startTime: new Date().getTime(),
-    endTime: new Date().getTime()
+from "./option";
+import TimerPool from "./timerPool";
+import CustomerTimer from "./customerTimer"
+
+class TimerMgr {
+  constructor() {
+    debugger
+    this._timerPool = new TimerPool();
   }
 
-  var config = untils.extend(defaultOptions, opts)
-  console.log(config);
-  return this._timePool.getTimer(config.delayTime)
+  _getTimer(config) {
+    return this._timerPool.getTimer(config)
+  }
+
+  generateTimer(opts) {
+    const customerTimer = new CustomerTimer(opts);
+    const timer = this._getTimer(customerTimer.config);
+    customerTimer._timer = timer;
+    return customerTimer;
+  }
 }
 
-timerMgr.timer = timer;
 
-export default timerMgr
+const timerMgr = new TimerMgr();
+
+module.exports = timerMgr;

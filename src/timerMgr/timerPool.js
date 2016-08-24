@@ -1,16 +1,20 @@
-function TimePool() {
-  this._pool = {};
-}
+import Timer from "./timer";
 
-TimePool.prototype = {
-  constructor: TimePool,
-  getTimer: function(delayTime) {
-    var t = this._pool[delayTime];
-    return t ? t : (this._pool[delayTime] = new timer(delayTime));
-  },
-  removeTimer: function(delayTime) {
+
+
+export default class TimerPool {
+  constructor() {
+    this._pool = {};
+  }
+
+  getTimer(opts) {
+    var t = this._pool[opts.key];
+    return t ? t : (this._pool[opts.key] = new Timer(opts.delayTime));
+  }
+
+  removeTimer(key) {
     if (this._pool[delayTime]) {
       delete this._pool[delayTime];
     }
   }
-};
+}
