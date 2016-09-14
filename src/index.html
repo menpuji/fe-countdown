@@ -27,11 +27,12 @@
 <script>
   var now = Date.now();
  var countdown1 =   new CountDown({
-    endTime: now + 8 * 1000,
+    endTime: now + 60 * 1000,
     fixNowDate: false,
     render: function(outstring) {
       console.log("countDown1: "+outstring);
     },
+	template: '{{s}}',
     delayTime:1000
   });
 

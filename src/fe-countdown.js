@@ -21,11 +21,11 @@ export default class CountDown {
       }
     }
     this.msInterval = timerMgr.generateTimer(this.config)
-    this.init();
+    this._init();
   }
 
-  init() {
-    var self = this;
+  _init() {
+    const self = this;
     if (this.fixNowDate) {
       var fix = new timerMgr.timer(this.fixNow);
       fix.add(function() {
@@ -35,10 +35,10 @@ export default class CountDown {
       });
     }
     var index = this.msInterval._timer.add(function() {
-      self.now += delayTime;
-      if (self.now >= self.endTime) {
-        this.msInterval.remove(index);
-        self.end();
+      self.config.now += delayTime;
+      if (self.config.now >= self.config.endTime) {
+        self.config.end();
+        timerMgr.remove(self.msInterval); 
       } else {
         self.config.render(self.getOutString());
       }
@@ -54,5 +54,12 @@ export default class CountDown {
     return formatTemplete(this.config.template, between);
   }
 
+  stop(){
+  }
+
+  destory(){
+    debugger
+    timerMgr.remove(this.msInterval);
+  }
 
 }

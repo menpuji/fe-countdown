@@ -7,7 +7,6 @@ import CustomerTimer from "./customerTimer"
 
 class TimerMgr {
   constructor() {
-    debugger
     this._timerPool = new TimerPool();
   }
 
@@ -20,6 +19,9 @@ class TimerMgr {
     const timer = this._getTimer(customerTimer.config);
     customerTimer._timer = timer;
     return customerTimer;
+  }
+  remove(msInterval){
+     this._timerPool._pool[msInterval.config.key]._queue.length =0;
   }
 }
 

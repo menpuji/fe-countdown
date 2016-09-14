@@ -103,12 +103,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	    this.msInterval = _timerMgr2.default.generateTimer(this.config);
-	    this.init();
+	    this._init();
 	  }
 	
 	  _createClass(CountDown, [{
-	    key: "init",
-	    value: function init() {
+	    key: "_init",
+	    value: function _init() {
 	      var self = this;
 	      if (this.fixNowDate) {
 	        var fix = new _timerMgr2.default.timer(this.fixNow);
@@ -119,10 +119,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 	      var index = this.msInterval._timer.add(function () {
-	        self.now += delayTime;
-	        if (self.now >= self.endTime) {
-	          this.msInterval.remove(index);
-	          self.end();
+	        self.config.now += delayTime;
+	        if (self.config.now >= self.config.endTime) {
+	          self.config.end();
+	          _timerMgr2.default.remove(self.msInterval);
 	        } else {
 	          self.config.render(self.getOutString());
 	        }
@@ -138,6 +138,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function getOutString() {
 	      var between = this.getBetween();
 	      return (0, _utils.formatTemplete)(this.config.template, between);
+	    }
+	  }, {
+	    key: "stop",
+	    value: function stop() {}
+	  }, {
+	    key: "destory",
+	    value: function destory() {
+	      debugger;
+	      _timerMgr2.default.remove(this.msInterval);
 	    }
 	  }]);
 	
@@ -172,7 +181,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function TimerMgr() {
 	    _classCallCheck(this, TimerMgr);
 	
-	    debugger;
 	    this._timerPool = new _timerPool2.default();
 	  }
 	
@@ -188,6 +196,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var timer = this._getTimer(customerTimer.config);
 	      customerTimer._timer = timer;
 	      return customerTimer;
+	    }
+	  }, {
+	    key: "remove",
+	    value: function remove(msInterval) {
+	      this._timerPool._pool[msInterval.config.key]._queue.length = 0;
 	    }
 	  }]);
 	
@@ -507,8 +520,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return config;
 	}
 	
+	function mixin(source, target) {
+	  for (var i in target) {
+	    if (target.hasOwnProperty(i)) {
+	      source[i] = target[i];
+	    }
+	  }
+	  return source;
+	};
+	
 	var utils = {
-	  cover: cover, formatTime: formatTime, formatTemplete: formatTemplete, getNowTime: getNowTime, extend: extend
+	  cover: cover, formatTime: formatTime, formatTemplete: formatTemplete, getNowTime: getNowTime, extend: extend, mixin: mixin
 	};
 	
 	module.exports = utils;

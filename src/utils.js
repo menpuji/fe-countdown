@@ -42,8 +42,17 @@ function extend(...args) {
   return config;
 }
 
+function mixin(source, target) {
+    for (var i in target) {
+      if (target.hasOwnProperty(i)) {
+        source[i] = target[i];
+      }
+    }
+    return source;
+  };
+
 const utils = {
-  cover, formatTime, formatTemplete, getNowTime, extend
+  cover, formatTime, formatTemplete, getNowTime, extend, mixin
 }
 
 module.exports = utils
